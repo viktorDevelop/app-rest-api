@@ -3,9 +3,11 @@ export default {
         return {
             count: 0 ,
             posts:[],
+            arFilterPosts:[],
             detail:[],
             showDetail:false,
-            category:[]
+            category:[],
+            curentCategory:0
         }
     },
 
@@ -21,6 +23,8 @@ export default {
            let req = await fetch('/api/posts.php');
            let res = await req.json()
             this.posts =  JSON.parse(JSON.stringify(res))
+            this.arFilterPosts = JSON.parse(JSON.stringify(res))
+
 
         },
         async getCategoryFetch()
@@ -37,6 +41,27 @@ export default {
                 this.detail = detail
                 this.showDetail = true
             }
+        },
+        filterPosts(idCat)
+        {
+            this.showDetail = false
+            this.curentCategory = idCat
+            let posts = this.jsonToArray(this.posts)
+            let res = posts.filter(item => item.id_category == idCat)
+            this.arFilterPosts = this.jsonToArray(res);
+        },
+
+        cleanFilter()
+        {
+            this.showDetail = false
+            this.curentCategory = 0
+            this.arFilterPosts = this.posts
+
+        },
+
+        jsonToArray(val)
+        {
+            return JSON.parse(JSON.stringify(val))
         }
     },
 
@@ -45,19 +70,34 @@ export default {
       {
           return  this.detail[0].content
       },
+        getFilterPosts()
+        {
+            return this.arFilterPosts;
+        },
+        getCurentCategory()
+        {
+            return this.curentCategory
+        }
 
     },
     template: `
          <div class="container mt-2 d-flex"> 
             <div class="col-md-3">
+            <li  
+                         @click="cleanFilter"
+                         :class="(getCurentCategory == 0) ? 'bg-primary' : ''"
+                         class="list-group-item"> все </li>
                <ul class="list-group">
-<!--               bg-primary -->
-                    <li  v-for="item in category" class="list-group-item"> {{item.title}}</li>
+                
+                    <li  v-for="item in category"
+                         @click="filterPosts(item.id)"
+                         :class="(item.id == getCurentCategory) ? 'bg-primary' :''  "
+                         class="list-group-item"> {{item.title}}</li>
                 </ul>
             </div>
-            
+             
              <div class="col-md-9 d-flex flex-wrap">
-                 <div class="col-md-4 "  v-for="item in posts ">
+                 <div class="col-md-4 "  v-for="item in getFilterPosts ">
                  <div class="card">
                       <div class="card-body">
                         <h4 class="card-title"> {{item.title}}</h4>
@@ -68,6 +108,7 @@ export default {
                       </div>
                     </div>
                  </div>
+                 <p v-if="getFilterPosts.length == 0"> нет постов, поищите в другой категории </p>
             </div>
         </div>
         
