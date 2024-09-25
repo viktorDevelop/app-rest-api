@@ -5,10 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>post home </title>
+    <title>post home  </title>
 </head>
 <body>
 
-<?//$page_view?>
-</body>
-</html>
+<?php // var_dump($page_data);?>
