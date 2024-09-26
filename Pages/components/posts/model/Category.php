@@ -23,7 +23,7 @@ class Category extends ActiveRecord
         ];
     }
 
-    public  function get($section = '')
+    public  function get()
     {
       $category =   $this->db->query('SELECT * FROM category')
             ->execute()->getAll(\PDO::FETCH_ASSOC);

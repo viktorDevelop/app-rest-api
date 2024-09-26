@@ -34,7 +34,8 @@ class PostComponent extends Component
 
         $pageType = new PageType($section,$postCode);
         $page_variant =  $pageType->get();
-        $this->arResult =  $page_variant->getData();
+
+        $this->arResult =  $page_variant->getData(['section'=>$section,'postCode'=>$postCode]);
         $this->template = $page_variant->getTemplate($this->template);
 
     }

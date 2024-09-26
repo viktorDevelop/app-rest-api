@@ -13,7 +13,7 @@ class Posts extends ActiveRecord
             return $this->getPost($postCode);
     }
 
-    private function getPostsByCategory($section ='')
+    public function getPostsByCategory($section ='')
     {
         $res =   $this->db->query('select * from posts where category_id IN 
                           (select id from category where alias = :alias)')
@@ -23,7 +23,7 @@ class Posts extends ActiveRecord
         return $res;
     }
 
-    private function getPost($postCode = '')
+    public function getPost($postCode = '')
     {
         $res = $this->db->query('SELECT * FROM posts WHERE alias = :alias');
         $res->setValue('alias',$postCode);

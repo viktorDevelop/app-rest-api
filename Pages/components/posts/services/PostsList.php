@@ -11,6 +11,13 @@ class PostsList   extends Component implements ComponentStateInterface
 
     public function getData($params = [])
     {
-        return $this->model(Posts::class)->get();
+        $sectionCode = (isset($params['section'])) ?? $params['section'];
+
+        if (!$sectionCode){
+            return [];
+        }
+        $res['posts'] =  $this->model(Posts::class)->getPostsByCategory($params['section']);
+        $res['parent_section'] = $params['section'];
+        return $res;
     }
 }

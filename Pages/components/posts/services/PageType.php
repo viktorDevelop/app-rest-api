@@ -14,41 +14,30 @@ class PageType
         $this->section = $section;
         $this->postCode = $postCode;
         $this->isSection();
-        $this->isPostDetail();
         $this->isPostList();
+        $this->isPostDetail();
     }
 
     private function isSection()
     {
         if (empty($this->section))
-        {
             $this->obj = new Section();
-
-
-        }
     }
 
     private function isPostList()
     {
        if (!empty($this->section))
-       {
            $this->obj = new PostsList();
-
-       }
     }
 
     private function isPostDetail()
     {
         if (!empty($this->postCode))
-        {
             $this->obj =  new Detail();
-
-        }
     }
 
     public function get()
     {
-
         return  $this->obj;
     }
 }

@@ -5,7 +5,9 @@
 ?>
 <div class="main" style="margin: 0 auto; max-width: 960px">
     <h2>category</h2>
-    list category
+    <?foreach ($arResult as $item):?>
+    <a href="/?page=home&section=<?=$item['alias']?>"> <?=$item['title']?> </a>
+    <?endforeach;?>
 </div>
 
 
