@@ -17,6 +17,9 @@ class Database
 
     }
 
+    /**
+     * @return Database
+     */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -29,24 +32,40 @@ class Database
         return self::$instance;
     }
 
+    /**
+     * @param $sql
+     * @return Database
+     */
     public function query($sql)
     {
         $this->sth =  $this->pdo->prepare($sql);
         return $this;
     }
 
-    public function setValue($column,$val)
+    /**
+     * @param $column
+     * @param $val
+     * @return Database
+     */
+    public function setValue($column, $val)
     {
         $this->sth->bindValue(':'.$column,$val);
         return $this;
     }
 
+    /**
+     * @return Database
+     */
     public function execute()
     {
         $this->sth->execute();
         return $this;
     }
 
+    /**
+     * @param $type
+     * @return Database
+     */
     public function getAll($type = '')
     {
         if ($type){
@@ -56,6 +75,10 @@ class Database
         }
     }
 
+    /**
+     * @param $type
+     * @return Database
+     */
     public function getOne($type = '')
     {
         if ($type){
