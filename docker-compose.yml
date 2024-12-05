@@ -1,0 +1,113 @@
+services:
+    php:
+        build: ./php/php82
+        container_name: php
+        volumes_from:
+            - source
+        links:
+            - db
+            - memcached
+        environment:
+            TZ: Europe/Moscow
+        stdin_open: true
+        tty: true
+        networks:
+            - myproject
+        restart: unless-stopped
+
+    web_server:
+        build: ./nginx
+        container_name: web_server
+        depends_on:
+            - source
+        volumes_from:
+            - source
+        ports:
+            - '0.0.0.0:80:80'
+            - '0.0.0.0:443:443'
+        links:
+            - php
+        networks:
+            - myproject
+        environment:
+            TZ: Europe/Moscow
+        stdin_open: true
+        tty: true
+        restart: unless-stopped
+
+    db:
+        build: ./mysql
+        container_name: db
+        volumes:
+            - ./mysql/init:/docker-entrypoint-initdb.d
+        volumes_from:
+            - source
+        ports:
+            - '0.0.0.0:3306:3306'
+        environment:
+            MYSQL_DATABASE: bitrix
+            MYSQL_USER: bitrix
+            MYSQL_PASSWORD: 123
+            MYSQL_ROOT_PASSWORD: 123
+            TZ: Europe/Moscow
+        command: mysqld --user=root --sql-mode=""
+        networks:
+            - myproject
+        stdin_open: true
+        tty: true
+        restart: unless-stopped
+
+    memcached:
+        image: memcached:latest
+        container_name: memcached
+        volumes_from:
+            - source
+        ports:
+            - '0.0.0.0:11211:11211'
+        networks:
+            - myproject
+        environment:
+            TZ: Europe/Moscow
+        stdin_open: true
+        tty: true
+        restart: unless-stopped
+
+    adminer:
+        image: dockette/adminer:full
+        container_name: adminer
+        links:
+            - db:db
+        ports:
+            - '0.0.0.0:8080:80'
+        environment:
+            UPLOAD: 1024M # upload_max_filesize, post_max_size
+            TZ: Europe/Moscow
+        restart: unless-stopped
+        stdin_open: true
+        tty: true
+        networks:
+            - myproject
+
+    source:
+        image: alpine:latest
+        container_name: source
+        volumes:
+            - ./logs/nginx:/var/log/nginx
+            - ./logs/php:/var/log/php
+            - ./logs/db:/var/log/mysql
+            - ./logs/memcached:/var/log/memcached
+            - db:/var/lib/mysql
+            - cache:/var/lib/memcached
+            - ./www:/var/www/bitrix
+            - /etc/localtime:/etc/localtime/:ro
+        networks:
+            - myproject
+
+volumes:
+    db:
+        driver: local
+    cache:
+        driver: local
+
+networks:
+    myproject:
