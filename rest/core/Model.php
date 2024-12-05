@@ -44,6 +44,20 @@ class Model
 
     }
 
+    public function getByField($field,$val)
+    {
+        $res =  $this->db->query("SELECT * FROM ".static::$tabel." WHERE ".$field." = :".$field)
+            ->setValue($field,$val)->execute()->getOne(\PDO::FETCH_ASSOC);
+
+        $res = [];
+        foreach ($res as $k=>$val)
+        {
+            $this->$k = $val;
+        }
+        return $res;
+
+    }
+
     public function getByList()
     {
         $res =  $this->db->query('SELECT * FROM '.static::$tabel)
