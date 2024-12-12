@@ -1,5 +1,5 @@
 <?php
-include __DIR__."/templates/template.php";
+//include __DIR__."/templates/template.php";
 include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 
 //Application::run();

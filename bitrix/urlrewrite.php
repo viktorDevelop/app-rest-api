@@ -233,12 +233,19 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 //$router->setPath(Posts::class);
 //$router->run();
 
- $uri = $_SERVER['REQUEST_URI'];
+$uri = $_SERVER['REQUEST_URI'];
 
 $routes = [
+    0=>[
+        'condition'=>'#^/$#',
+        'rule'=>'section=$1&post=$2',
+        'controller'=> \tasks\controllers\Posts::class,
+        'method'=>'index',
+        'rest'=>['get','post']
+    ],
     1=>[
         'condition'=>'#^/category/?$#',
-        'rule'=>'',
+        'rule'=>'section_id=245',
         'path'=>'/posts/index.php',
         'controller'=> \tasks\controllers\Posts::class,
         'method'=>'index'
@@ -248,54 +255,47 @@ $routes = [
         'rule'=>'section=$1&post=$2',
         'controller'=> \tasks\controllers\Posts::class,
         'method'=>'index',
-        'rest'=>['get','post']
-    ]
+
+    ],
+
 ];
-
-
-foreach ($routes as $k => $items)
-{
-        if (preg_match($items['condition'],$uri))
-        {
-
-            $rule = preg_replace($items['condition'],$items['rule'],$uri);
-
-        }
-}
-
-//$rule = preg_replace('#^/posts/([a-z0-9]+)/?([0-9]+)$#','section=$1&post=$2',$uri);
-echo $rule;
-
-//echo '<pre>';
-
-parse_str($rule,$var);
-
-print_r($var);
-
-//if (strpos($rule,'&'))
-//{
-//    $a = explode('&',$rule);
-//    print_r($a);
-//    foreach ($a as $k=>$val)
-//    {
-//        $b[] = explode('=',$val);
-//    }
-//
-//    print_r($b);
-//}
-
-
-
-
-
 
 
 
 class Router {
+
+    private $routes = [];
+    private $current_rules = [];
+
+    public function __construct($routes = [])
+    {
+        $this->routes = $routes;
+        $this->uri = $_SERVER['REQUEST_URI'];
+
+        $this->parseUrl();
+        $this->get();;
+        $this->post();
+    }
+
     public function get()
-    {}
+    {
+        if ($_SERVER['REQUEST_METHOD']=='GET'){
+
+            echo '<pre>';
+            print_r($this->current_rules);
+        }
+    }
     public function post()
-    {}
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+//            http_send_content_type('Content:application/json');
+            header('Content-Type: application/json');
+            http_response_code(200);
+            $controller = $this->current_rules['controller'];
+            $controller_o = new $controller();
+//            echo json_encode($this->current_rules);
+        }
+    }
     public function put()
     {}
     public function delete()
@@ -303,6 +303,15 @@ class Router {
 
     private function parseUrl()
     {
-
+        foreach ($this->routes as $k => $items)
+        {
+            if (preg_match($items['condition'],$this->uri))
+            {
+                $rule = preg_replace($items['condition'],$items['rule'],$this->uri);
+                $this->current_rules = $items;
+            }
+        }
     }
 }
+
+$router = new Router($routes);
