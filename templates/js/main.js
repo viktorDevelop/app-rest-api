@@ -34,9 +34,9 @@ export default {
 
     template: `
         <div class="container">
-        <Menu/>                                            
-                <div class="col-md-12 d-flex ">
-                <menu></menu>
+        <Menu/>        
+                                           
+                <div class="col-md-12 d-flex ">                
                      <div v-for="item in project " class="col-md-4">{{item.title}}</div>
                 </div>
         </div>
