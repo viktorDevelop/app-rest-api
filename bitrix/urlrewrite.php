@@ -227,8 +227,82 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 //}
 
 
-$router = new \tasks\core\Router();
+//$router = new \tasks\core\Router();
+//
+//$router->setPath(Task::class);
+//$router->setPath(Posts::class);
+//$router->run();
 
-$router->setPath(Task::class);
-$router->setPath(Posts::class);
-$router->run();
+ $uri = $_SERVER['REQUEST_URI'];
+
+$routes = [
+    1=>[
+        'condition'=>'#^/category/?$#',
+        'rule'=>'',
+        'path'=>'/posts/index.php',
+        'controller'=> \tasks\controllers\Posts::class,
+        'method'=>'index'
+    ],
+    2=>[
+        'condition'=>'#^/posts/([a-z0-9]+)/?([0-9]+)/?$#',
+        'rule'=>'section=$1&post=$2',
+        'controller'=> \tasks\controllers\Posts::class,
+        'method'=>'index',
+        'rest'=>['get','post']
+    ]
+];
+
+
+foreach ($routes as $k => $items)
+{
+        if (preg_match($items['condition'],$uri))
+        {
+
+            $rule = preg_replace($items['condition'],$items['rule'],$uri);
+
+        }
+}
+
+//$rule = preg_replace('#^/posts/([a-z0-9]+)/?([0-9]+)$#','section=$1&post=$2',$uri);
+echo $rule;
+
+//echo '<pre>';
+
+parse_str($rule,$var);
+
+print_r($var);
+
+//if (strpos($rule,'&'))
+//{
+//    $a = explode('&',$rule);
+//    print_r($a);
+//    foreach ($a as $k=>$val)
+//    {
+//        $b[] = explode('=',$val);
+//    }
+//
+//    print_r($b);
+//}
+
+
+
+
+
+
+
+
+class Router {
+    public function get()
+    {}
+    public function post()
+    {}
+    public function put()
+    {}
+    public function delete()
+    {}
+
+    private function parseUrl()
+    {
+
+    }
+}
