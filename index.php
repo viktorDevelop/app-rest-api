@@ -15,5 +15,14 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 //admin   header menu topMenu content footer
 //public  header menu topMenu content footer
 
-
+$routes = [
+    0=>[
+        'condition'=>'#^/$#',
+        'rule'=>'section=$1&post=$2',
+        'controller'=> \medical\controllers\CategoryController::class,
+        'method'=>'index',
+        'rest'=>['get','post']
+    ],
+];
+$router = new \medical\Router($routes);
 
