@@ -68,7 +68,6 @@ class Router {
         }
 
         $getParams = parse_str($rule,$resArrGetParams);
-
         $this->request = new Request();
         $this->request->set($resArrGetParams);
 

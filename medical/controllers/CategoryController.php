@@ -7,7 +7,8 @@ class CategoryController
 {
     public function actionIndex(Request $request)
     {
-        echo $request->get('section_id');
+        $r =  $request->get();
+        var_dump($r);
         echo 'list category';
     }
 

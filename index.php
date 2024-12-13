@@ -18,7 +18,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 $routes = [
     0=>[
         'condition'=>'#^/$#',
-        'rule'=>'section=$1&post=$2',
+        'rule'=>'section=10&post=20',
         'controller'=> \medical\controllers\CategoryController::class,
         'method'=>'index',
         'rest'=>['get','post']
