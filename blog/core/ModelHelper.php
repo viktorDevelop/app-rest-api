@@ -1,10 +1,7 @@
 <?php
+namespace blog\core;
 
-namespace rest\core;
-
-
-
-class Component
+Trait ModelHelper
 {
     private $model;
     private $arResult =[];
@@ -46,6 +43,4 @@ class Component
         }
 
     }
-
-
 }

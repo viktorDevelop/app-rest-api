@@ -13,9 +13,9 @@ class Router {
         $this->uri = $_SERVER['REQUEST_URI'];
 
         $this->getReplaceRules();
-//        $this->parseUrl();
-//        $this->get();;
-//        $this->post();
+        $this->parseUrl();
+        $this->get();;
+        $this->post();
     }
 
     public function get()
@@ -83,7 +83,7 @@ class Router {
                 "{int}"=>"(0-9)",
                 "{query}"=>"\\??([^\\/]+)"
             ];
-        echo '<pre>';
+//        echo '<pre>';
         foreach ($this->routes as $key=>$items)
         {
             foreach ($preg_replace_rule as $k=>$rep)
@@ -97,10 +97,10 @@ class Router {
             }
         }
 
-        $cond = '#^/posts/{:str}/{:any}$#';
-        $ex =  explode('{:any}',$cond);
-        $t = preg_replace('~\\{:any\\}|\\{:str\\}~',"([a-z0-9])",$cond);
-        print_r($ex);
+//        $cond = '#^/posts/{:str}/{:any}$#';
+//        $ex =  explode('{:any}',$cond);
+//        $t = preg_replace('~\\{:any\\}|\\{:str\\}~',"([a-z0-9])",$cond);
+//        print_r($ex);
     }
 }
 

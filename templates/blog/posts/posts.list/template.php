@@ -1,2 +1,4 @@
 <?php
-print_r($arResult);
+print_r($gallery);?>
+
+<?=$gallery?>

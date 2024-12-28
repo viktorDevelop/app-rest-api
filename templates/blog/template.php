@@ -10,8 +10,18 @@
 
 </head>
 <body>
+
+<div class="container">
+    <div class="col-md-12">
+
+    </div>
+    <div class="col-md-12 d-flex ">
+        <?=$content?>
+    </div>
+</div>
 <?=$topMenu?>
-<?=$content?>
+
+
 <?//print_r($content)?>
 </body>
 </html>

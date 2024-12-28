@@ -10,6 +10,7 @@ class Posts extends Component
     public function List()
     {
         $this->view->arResult = ['post'=>'title'];
+        $this->view->gallery = ['gallery'];
         return  $this->view->render('blog/posts/'.static::$templateName);
     }
 

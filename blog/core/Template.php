@@ -17,6 +17,11 @@ class Template
         $this->view->$alias = $class;
     }
 
+    public function setContent($class)
+    {
+        $this->view->content = $class;
+    }
+
 
     public function show()
     {
