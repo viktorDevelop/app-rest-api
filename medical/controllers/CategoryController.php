@@ -12,9 +12,11 @@ class CategoryController
         echo 'list category';
     }
 
+    //category/bitrix/php-article
     public function actionPosts(Request $request)
     {
         echo $request->get();
         echo 'fasdfsf';
     }
+
 }

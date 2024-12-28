@@ -12,9 +12,10 @@ class Router {
         $this->routes = $routes;
         $this->uri = $_SERVER['REQUEST_URI'];
 
-        $this->parseUrl();
-        $this->get();;
-        $this->post();
+        $this->getReplaceRules();
+//        $this->parseUrl();
+//        $this->get();;
+//        $this->post();
     }
 
     public function get()
@@ -71,6 +72,51 @@ class Router {
         $this->request = new Request();
         $this->request->set($resArrGetParams);
 
+    }
 
+    private function getReplaceRules()
+    {
+        $preg_replace_rule =
+            [
+                "{any}"=>"([a-z0-9-]+)",
+                "{str}"=>"([a-z-]+)",
+                "{int}"=>"(0-9)",
+                "{query}"=>"\\??([^\\/]+)"
+            ];
+        echo '<pre>';
+        foreach ($this->routes as $key=>$items)
+        {
+            foreach ($preg_replace_rule as $k=>$rep)
+            {
+                if (strpos($items['condition'],$k))
+                {
+//                    $items['condition'] = str_replace($k,$rep,$items['condition']);
+                   $this->routes[$key]['condition'] = str_replace($k,$rep,$items['condition']);
+
+                }
+            }
+        }
+
+        $cond = '#^/posts/{:str}/{:any}$#';
+        $ex =  explode('{:any}',$cond);
+        $t = preg_replace('~\\{:any\\}|\\{:str\\}~',"([a-z0-9])",$cond);
+        print_r($ex);
     }
 }
+
+//$preg_replace_rule = [];
+//$preg_replace_rule =
+//    [
+//        "{any}"=>"([a-z0-9-]+)",
+//        "{str}"=>"([a-z-]+)",
+//        "{int}"=>"(0-9)",
+//        "{query}"=>"\\??([^\\/]+)"
+//    ];
+//
+//foreach ($routes as $items)
+//{
+//    foreach ($preg_replace_rule as $rep)
+//    {
+//
+//    }
+//}
